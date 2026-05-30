@@ -19,6 +19,10 @@ body{
   max-width:520px;margin:0 auto;min-height:100vh;
   padding-bottom:88px;position:relative;overflow-x:hidden;
 }
+#bgcanvas{position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;opacity:.55}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(1200px 600px at 80% -10%,rgba(124,91,255,.16),transparent 60%),
+             radial-gradient(900px 500px at -10% 20%,rgba(91,140,255,.14),transparent 60%);}
 .header{
   padding:22px 18px 14px;position:sticky;top:0;z-index:20;
   background:linear-gradient(180deg,var(--bg) 70%,transparent);
@@ -160,6 +164,59 @@ details.spoiler[open]>summary .chev{transform:rotate(180deg)}
 .actions-group { display:flex; flex-direction:column; gap:10px; margin-top:24px; background:var(--surface); border-radius:16px; padding:16px; border:1px solid var(--line); }
 .actions-group .btn { margin-top:0; }
 
+/* ---------- Анимации ---------- */
+.header h1{background:linear-gradient(120deg,var(--txt),var(--accent),var(--accent2),var(--txt));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 8s linear infinite}
+@keyframes shine{to{background-position:300% 0}}
+.tab{position:relative;overflow:hidden}
+.tab.active{animation:tabPop .35s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes tabPop{0%{transform:scale(.94)}100%{transform:scale(1)}}
+.card{animation:cardIn .45s cubic-bezier(.16,1,.3,1) both}
+.list>.card:nth-child(1){animation-delay:.02s}.list>.card:nth-child(2){animation-delay:.06s}
+.list>.card:nth-child(3){animation-delay:.10s}.list>.card:nth-child(4){animation-delay:.14s}
+.list>.card:nth-child(5){animation-delay:.18s}.list>.card:nth-child(6){animation-delay:.22s}
+.list>.card:nth-child(n+7){animation-delay:.26s}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.45);border-color:rgba(91,140,255,.4)}
+.card.alert{animation:cardIn .45s cubic-bezier(.16,1,.3,1) both,alertGlow 2.2s ease-in-out infinite}
+@keyframes alertGlow{0%,100%{box-shadow:0 0 0 0 rgba(248,113,113,.0)}50%{box-shadow:0 0 0 4px rgba(248,113,113,.12)}}
+.fab button{transition:transform .2s,box-shadow .2s}
+.fab button:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(124,91,255,.55)}
+.btn{transition:filter .15s,transform .12s}.btn:hover{filter:brightness(1.08)}.btn:active{transform:scale(.98)}
+.badge.over{animation:blink 1.3s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+
+/* ---------- Модалка просрочки ---------- */
+#alertOverlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:80;display:none;
+  align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:20px}
+#alertOverlay.show{display:flex;animation:fadeOv .3s ease}
+@keyframes fadeOv{from{opacity:0}to{opacity:1}}
+.alert-modal{width:100%;max-width:440px;max-height:84vh;overflow-y:auto;border-radius:24px;
+  background:linear-gradient(180deg,rgba(248,113,113,.12),var(--surface2));
+  border:1px solid rgba(248,113,113,.35);padding:26px 22px 22px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(248,113,113,.15) inset;
+  animation:popIn .5s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{0%{opacity:0;transform:scale(.85) translateY(20px)}100%{opacity:1;transform:none}}
+.alert-modal .ic{width:62px;height:62px;margin:0 auto 14px;border-radius:50%;
+  background:rgba(248,113,113,.18);display:flex;align-items:center;justify-content:center;font-size:30px;
+  animation:ring 1.6s ease-in-out infinite}
+@keyframes ring{0%,100%{box-shadow:0 0 0 0 rgba(248,113,113,.35)}50%{box-shadow:0 0 0 12px rgba(248,113,113,0)}}
+.alert-modal h2{text-align:center;margin:0 0 4px;font-size:22px}
+.alert-modal .subt{text-align:center;color:var(--muted);font-size:13px;margin-bottom:18px}
+.od-row{display:flex;justify-content:space-between;align-items:center;gap:12px;
+  background:var(--surface);border:1px solid rgba(248,113,113,.25);border-radius:14px;
+  padding:13px 14px;margin-bottom:10px;cursor:pointer;transition:.15s;
+  animation:cardIn .45s cubic-bezier(.16,1,.3,1) both}
+.od-row:hover{border-color:var(--red);transform:translateX(2px)}
+.od-row .nm{font-weight:700;font-size:14px}
+.od-row .sb{font-size:12px;color:var(--muted);margin-top:2px}
+.od-row .ph2{font-size:12px;color:var(--accent);margin-top:3px}
+.od-row .am{text-align:right;white-space:nowrap}
+.od-row .am b{color:var(--red);font-size:15px}
+.od-row .am span{display:block;font-size:11px;color:var(--red);font-weight:600;margin-top:2px}
+.od-total{display:flex;justify-content:space-between;font-size:14px;font-weight:700;
+  margin:14px 2px 4px;padding-top:12px;border-top:1px solid var(--line)}
+.od-total b{color:var(--red)}
+
 /* ---------- Большие экраны (планшет / десктоп) ---------- */
 @media(min-width:760px){
   body{max-width:1200px;padding:0 28px 110px}
@@ -196,6 +253,7 @@ details.spoiler[open]>summary .chev{transform:rotate(180deg)}
 </style>
 </head>
 <body>
+<canvas id="bgcanvas"></canvas>
 <div class="header">
   <div><h1>Аренда</h1><p>Управление недвижимостью</p></div>
   <div class="hbtns">
@@ -214,10 +272,24 @@ details.spoiler[open]>summary .chev{transform:rotate(180deg)}
 
 <div class="overlay" id="overlay" onclick="closeSheet(event)"></div>
 
+<!-- Модальное окно: просрочки -->
+<div id="alertOverlay">
+  <div class="alert-modal">
+    <div class="ic">⚠️</div>
+    <h2>Просроченные платежи</h2>
+    <div class="subt" id="alertSub"></div>
+    <div id="alertList"></div>
+    <button class="btn primary" style="margin-top:18px" onclick="closeOverdue()">Понятно</button>
+  </div>
+</div>
+
 <!-- Карточка объекта -->
 <div class="sheet" id="editSheet">
   <div class="grip"></div>
-  <h2 id="editTitle">Новый объект</h2>
+  <div class="dh" style="margin-bottom:0">
+    <h2 id="editTitle" style="margin:0">Новый объект</h2>
+    <button class="close-btn" onclick="hideSheet('editSheet')">✕</button>
+  </div>
   <input type="hidden" id="f_id">
   <label>Название / номер объекта</label>
   <input id="f_name" placeholder="напр. Машиноместо №14">
@@ -230,12 +302,47 @@ details.spoiler[open]>summary .chev{transform:rotate(180deg)}
     </div>
   </div>
   <div class="section-t" style="margin-top:18px">Арендатор</div>
-  <label>ФИО / организация</label>
-  <input id="f_tenant" placeholder="напр. ООО «Ромашка»">
-  <label>Реквизиты / паспорт / ИНН</label>
-  <input id="f_tenant_req" placeholder="ИНН 1650000000 / паспорт ...">
+  <label>Тип арендатора</label>
+  <select id="f_ttype" onchange="updateTenantFields()">
+    <option value="person">Физическое лицо</option>
+    <option value="ip">Индивидуальный предприниматель (ИП)</option>
+    <option value="ooo">Юридическое лицо (ООО)</option>
+  </select>
+  <label id="lbl_tenant">ФИО арендатора</label>
+  <input id="f_tenant" placeholder="напр. Иванов Иван Иванович">
   <label>Телефон для связи</label>
   <input id="f_phone" type="tel" inputmode="tel" placeholder="+7 900 000-00-00">
+
+  <!-- Физическое лицо -->
+  <div id="grp_person">
+    <label>Дата рождения</label>
+    <input id="f_birth" placeholder="дд.мм.гггг">
+    <label>Паспорт (серия, номер)</label>
+    <input id="f_passport" placeholder="92 13 № 574547">
+    <label>Кем и когда выдан паспорт</label>
+    <input id="f_passport_by" placeholder="ТП УФМС России по РТ ..., 11.01.2014">
+  </div>
+
+  <!-- ИП / ООО — реквизиты -->
+  <div id="grp_org">
+    <div class="row">
+      <div><label id="lbl_inn">ИНН</label><input id="f_tenant_req" placeholder="1650000000"></div>
+      <div id="box_kpp"><label>КПП</label><input id="f_kpp" placeholder="165001001"></div>
+    </div>
+    <label id="lbl_ogrn">ОГРН</label>
+    <input id="f_ogrn" placeholder="1021600000000">
+    <div id="box_director">
+      <label>Директор (в лице кого заключается договор)</label>
+      <input id="f_director" placeholder="напр. Петров Пётр Петрович">
+      <label>Действующий на основании</label>
+      <input id="f_basis" placeholder="Устава / доверенности № ...">
+    </div>
+  </div>
+
+  <label id="lbl_reg">Адрес регистрации арендатора</label>
+  <input id="f_reg_addr" placeholder="г. Казань, ул. ...">
+  <label>Номер / шифр договора</label>
+  <input id="f_contract_no" placeholder="напр. А05-2024">
   <div class="row">
     <div><label>Аренда в мес., ₽</label><input id="f_rent" type="number" inputmode="decimal" placeholder="0"></div>
     <div><label>Депозит, ₽</label><input id="f_deposit" type="number" inputmode="decimal" placeholder="0"></div>
@@ -282,12 +389,18 @@ details.spoiler[open]>summary .chev{transform:rotate(180deg)}
   <div class="grip"></div>
   <h2>Расход на содержание</h2>
   <label>Назначение</label>
-  <select id="e_cat">
+  <select id="e_cat" onchange="toggleCustomCat()">
     <option>Коммунальные услуги</option><option>Электроэнергия</option>
     <option>Уборка / клининг</option><option>Ремонт</option>
     <option>Налог на имущество</option><option>Охрана</option>
     <option>Управляющая компания</option><option>Прочее</option>
   </select>
+  <div id="customCatBox" style="display:none">
+    <label>Своя категория</label>
+    <input id="e_cat_custom" list="catList" placeholder="впишите категорию" autocomplete="off">
+    <datalist id="catList"></datalist>
+    <p class="note">Новая категория запомнится и будет подсказываться в дальнейшем.</p>
+  </div>
   <div class="row">
     <div><label>Сумма, ₽</label><input id="e_amount" type="number" inputmode="decimal" placeholder="0"></div>
     <div><label>Дата</label><input id="e_date" type="date"></div>
@@ -314,9 +427,27 @@ details.spoiler[open]>summary .chev{transform:rotate(180deg)}
     <div><label>С</label><input id="r_from" type="date"></div>
     <div><label>По</label><input id="r_to" type="date"></div>
   </div>
+  <label>Что включить</label>
+  <select id="r_scope">
+    <option value="all">Все объекты</option>
+    <option value="parking">Только машиноместа</option>
+    <option value="premise">Только недвижимость</option>
+  </select>
   <button class="btn primary" onclick="buildReport()">Сформировать</button>
   <div id="reportBody" style="margin-top:18px"></div>
   <button class="btn ghost" onclick="hideSheet('reportSheet')">Закрыть</button>
+</div>
+
+<!-- Уведомление о задолженности -->
+<div class="sheet" id="noticeSheet">
+  <div class="grip"></div>
+  <div class="dh" style="margin-bottom:4px">
+    <h2 style="margin:0">📨 Уведомление о задолженности</h2>
+    <button class="close-btn" onclick="hideSheet('noticeSheet')">✕</button>
+  </div>
+  <p class="note" style="margin-bottom:8px">Текст сформирован автоматически. Отредактируйте при необходимости, затем скопируйте или скачайте.</p>
+  <textarea id="noticeText" style="min-height:320px;font-size:13px;line-height:1.5"></textarea>
+  <button class="btn primary" onclick="copyNotice()">📋 Скопировать текст</button>
 </div>
 
 <!-- Архив расходов -->
@@ -329,6 +460,21 @@ details.spoiler[open]>summary .chev{transform:rotate(180deg)}
 
 <script>
 /* ---------- Данные (тест, в памяти) ---------- */
+/* Данные арендодателя (для автогенерации договора) */
+let landlord = {
+  name:'Димухаметов Артур Рифхатович',
+  birth:'25.03.1984',
+  passport:'92 22 № 168325',
+  passport_by:'МВД по Республике Татарстан, 16.09.2022',
+  reg_addr:'г. Казань, ул. Космонавтов, д. 61 «Б», кв. 84',
+  bank:'АО «Тинькофф Банк»',
+  acc:'40817810500024586713',
+  bik:'044525974',
+  corr:'30101810145250000974',
+  inn_bank:'7710140679',
+  kpp_bank:'771301001',
+  phone:'8 917 297 52 52 (Сбербанк)'
+};
 let state = { current:'parking', objects:[
   {id:1,type:'parking',name:'Машиноместо №14',address:'г. Казань, ул. Баумана, 12, паркинг -1',area:13,status:'rented',
    tenant:'Иванов Иван Иванович',tenant_req:'паспорт 9200 123456',phone:'+7 917 000-11-22',photos:[],rent:6000,deposit:6000,start:'2026-01-01',end:'2026-07-15',index:7,reg:'yes',
@@ -337,7 +483,7 @@ let state = { current:'parking', objects:[
   {id:2,type:'parking',name:'Машиноместо №27',address:'г. Казань, ул. Баумана, 12, паркинг -1',area:13,status:'free',
    tenant:'',tenant_req:'',phone:'',photos:[],rent:6500,deposit:0,start:'',end:'',index:7,reg:'no',payday:5,nextpay:'',comment:'',payments:[],expenses:[]},
   {id:3,type:'premise',name:'Помещение 1Н',address:'г. Казань, пр. Победы, 100',area:84,status:'rented',
-   tenant:'ООО «Ромашка»',tenant_req:'ИНН 1650123456',phone:'+7 900 000-00-00',photos:[],rent:85000,deposit:85000,start:'2026-03-01',end:'2031-02-28',index:7,reg:'yes',
+   tenant:'ООО «Ромашка»',ttype:'ooo',tenant_req:'1650123456',kpp:'165001001',ogrn:'1121650000001',director:'Петрова Анна Сергеевна',basis:'Устава',phone:'+7 900 000-00-00',photos:[],rent:85000,deposit:85000,start:'2026-03-01',end:'2031-02-28',index:7,reg:'yes',
    payday:5,nextpay:'2026-06-05',comment:'Договор зарегистрирован, контакт: Петрова, +7 900 000-00-00.',
    payments:[{id:81,date:'2026-03-05',amount:85000},{id:82,date:'2026-04-05',amount:85000},{id:83,date:'2026-05-05',amount:85000}],
    expenses:[{id:31,cat:'Электроэнергия',note:'счёт за апрель',amount:7400,date:'2026-05-10'},{id:32,cat:'Уборка / клининг',note:'',amount:9000,date:'2026-05-01'},{id:33,cat:'Ремонт',note:'замена двери (март)',amount:21000,date:'2026-03-15'}]},
@@ -346,7 +492,7 @@ let state = { current:'parking', objects:[
    tenant:'Петров Сергей Олегович',tenant_req:'паспорт 9210 654321',phone:'+7 927 111-22-33',photos:[],rent:6200,deposit:6200,start:'2025-06-01',end:'2026-06-10',index:7,reg:'yes',
    payday:5,nextpay:'2026-05-20',comment:'Просрочка по оплате, напомнить.',payments:[{id:101,date:'2026-04-05',amount:6200}],expenses:[]},
   {id:5,type:'parking',name:'Машиноместо №42',address:'г. Казань, ул. Баумана, 12, паркинг -2',area:14,status:'rented',
-   tenant:'ООО «ТрансЛогистик»',tenant_req:'ИНН 1655000777',phone:'+7 843 200-30-40',photos:[],rent:7000,deposit:7000,start:'2026-02-01',end:'2027-01-31',index:6,reg:'yes',
+   tenant:'ООО «ТрансЛогистик»',ttype:'ooo',tenant_req:'1655000777',kpp:'165501001',ogrn:'1141655000777',director:'Сафин Ильдар Маратович',basis:'Устава',phone:'+7 843 200-30-40',photos:[],rent:7000,deposit:7000,start:'2026-02-01',end:'2027-01-31',index:6,reg:'yes',
    payday:1,nextpay:'2026-06-01',comment:'Корпоративный клиент, 1 место.',payments:[{id:102,date:'2026-05-01',amount:7000}],expenses:[]},
   {id:6,type:'parking',name:'Машиноместо №43',address:'г. Казань, ул. Баумана, 12, паркинг -2',area:14,status:'free',
    tenant:'',tenant_req:'',phone:'',photos:[],rent:7000,deposit:0,start:'',end:'',index:6,reg:'no',payday:5,nextpay:'',comment:'Свободно, ждём арендатора.',payments:[],expenses:[]},
@@ -356,26 +502,33 @@ let state = { current:'parking', objects:[
   {id:8,type:'parking',name:'Машиноместо №09',address:'г. Казань, ул. Чистопольская, 5, паркинг -1',area:12,status:'rented',
    tenant:'Кузнецов Дмитрий',tenant_req:'паспорт 9218 778899',phone:'+7 960 333-44-55',photos:[],rent:5500,deposit:5500,start:'2026-01-15',end:'2026-06-20',index:5,reg:'no',
    payday:15,nextpay:'2026-06-02',comment:'Срок аренды скоро заканчивается.',payments:[{id:104,date:'2026-05-15',amount:5500}],expenses:[]},
+  {id:14,type:'parking',name:'Парковочное место №51',address:'г. Казань, ул. Космонавтов, д. 61 «Б», корп. 2, этаж 2',area:13,status:'rented',
+   tenant:'Гарипова Лилия Батыевна',ttype:'person',tenant_req:'',phone:'',photos:[],rent:3750,deposit:3750,start:'2025-09-06',end:'2026-09-06',index:0,reg:'no',
+   payday:6,nextpay:'2026-06-06',comment:'Хранение ТС. Оплата по договору №А05-2024. Коммунальные включены, охрана не осуществляется.',
+   birth:'28.09.1986',passport:'92 13 № 574547',passport_by:'территориальным пунктом УФМС России по Республике Татарстан в Тюлячинском районе, 11.01.2014',
+   reg_addr:'г. Казань, ул. Космонавтов, д. 61 «Г», кв. 98',contract_no:'А05-2024',
+   payments:[{id:131,date:'2026-05-06',amount:3750}],expenses:[]},
   // --- доп. помещения ---
   {id:9,type:'premise',name:'Помещение 2Н',address:'г. Казань, пр. Победы, 100',area:120,status:'rented',
-   tenant:'ООО «Альфа-Маркет»',tenant_req:'ИНН 1660111222',phone:'+7 843 111-00-11',photos:[],rent:140000,deposit:140000,start:'2025-09-01',end:'2026-06-08',index:8,reg:'yes',
+   tenant:'ООО «Альфа-Маркет»',ttype:'ooo',tenant_req:'1660111222',kpp:'166001001',ogrn:'1131660111222',director:'Зиннуров Айдар Ринатович',basis:'Устава',phone:'+7 843 111-00-11',photos:[],rent:140000,deposit:140000,start:'2025-09-01',end:'2026-06-08',index:8,reg:'yes',
    payday:5,nextpay:'2026-05-22',comment:'Просрочка платежа + срок к концу.',payments:[{id:111,date:'2026-04-05',amount:140000}],
    expenses:[{id:121,cat:'Охрана',note:'',amount:12000,date:'2026-05-04'},{id:122,cat:'Налог на имущество',note:'аванс',amount:30000,date:'2026-02-10'}]},
   {id:10,type:'premise',name:'Помещение 3Н',address:'г. Казань, ул. Декабристов, 20',area:55,status:'rented',
-   tenant:'ИП Гафуров Р.Р.',tenant_req:'ИНН 165912345678',phone:'+7 917 800-90-10',photos:[],rent:60000,deposit:60000,start:'2026-04-01',end:'2028-03-31',index:7,reg:'yes',
+   tenant:'Гафуров Рустам Рашитович',ttype:'ip',tenant_req:'165912345678',ogrn:'316169000012345',phone:'+7 917 800-90-10',photos:[],rent:60000,deposit:60000,start:'2026-04-01',end:'2028-03-31',index:7,reg:'yes',
    payday:5,nextpay:'2026-06-05',comment:'',payments:[{id:112,date:'2026-04-05',amount:60000},{id:113,date:'2026-05-05',amount:60000}],
    expenses:[{id:123,cat:'Коммунальные услуги',note:'',amount:6500,date:'2026-05-08'}]},
   {id:11,type:'premise',name:'Помещение 4Н',address:'г. Казань, ул. Декабристов, 20',area:40,status:'free',
    tenant:'',tenant_req:'',phone:'',photos:[],rent:48000,deposit:0,start:'',end:'',index:7,reg:'no',payday:5,nextpay:'',comment:'Идёт ремонт перед сдачей.',payments:[],
    expenses:[{id:124,cat:'Ремонт',note:'косметический',amount:85000,date:'2026-05-12'}]},
   {id:12,type:'premise',name:'Помещение 5Н',address:'г. Казань, ул. Спартаковская, 7',area:200,status:'rented',
-   tenant:'ООО «МедЦентр Плюс»',tenant_req:'ИНН 1661777888',phone:'+7 843 250-25-25',photos:[],rent:230000,deposit:230000,start:'2025-07-01',end:'2030-06-30',index:9,reg:'yes',
+   tenant:'ООО «МедЦентр Плюс»',ttype:'ooo',tenant_req:'1661777888',kpp:'166101001',ogrn:'1151661777888',director:'Хабибуллина Гузель Наилевна',basis:'Устава',phone:'+7 843 250-25-25',photos:[],rent:230000,deposit:230000,start:'2025-07-01',end:'2030-06-30',index:9,reg:'yes',
    payday:3,nextpay:'2026-06-03',comment:'Якорный арендатор.',payments:[{id:114,date:'2026-05-03',amount:230000}],
    expenses:[{id:125,cat:'Управляющая компания',note:'',amount:18000,date:'2026-05-02'}]},
   {id:13,type:'premise',name:'Помещение 6Н',address:'г. Казань, ул. Спартаковская, 7',area:75,status:'rented',
    tenant:'Самозанятый Иванова М.',tenant_req:'ИНН 165700112233',phone:'+7 987 121-21-21',photos:[],rent:70000,deposit:35000,start:'2026-05-01',end:'2026-06-15',index:5,reg:'no',
    payday:1,nextpay:'2026-06-01',comment:'Краткий договор, заканчивается скоро.',payments:[{id:115,date:'2026-05-01',amount:70000}],expenses:[]},
 ],
+customCats:[],
 parkingExpenses:[{id:51,cat:'Управляющая компания',note:'обслуживание паркинга',amount:5000,date:'2026-05-03'},{id:52,cat:'Охрана',note:'',amount:8000,date:'2026-05-01'},{id:53,cat:'Уборка / клининг',note:'апрель',amount:4500,date:'2026-04-02'},{id:54,cat:'Электроэнергия',note:'март',amount:3200,date:'2026-03-05'}],
 archive:[
   {id:91,type:'premise',name:'Помещение 1Н',address:'г. Казань, пр. Победы, 100',area:84,
@@ -387,16 +540,19 @@ const money=n=>(Number(n)||0).toLocaleString('ru-RU')+' ₽';
 const fdate=d=>d?new Date(d).toLocaleDateString('ru-RU'):'—';
 const sum=arr=>arr.reduce((a,e)=>a+(+e.amount||0),0);
 const today=()=>{const t=new Date();t.setHours(0,0,0,0);return t;};
-const daysTo=d=>d?Math.round((new Date(d)-today())/864e5):null;
-function term(o){if(!o.start||!o.end)return'';let m=(new Date(o.end)-new Date(o.start))/2.63e9;if(m<=0)return'';let y=Math.floor(m/12),mo=Math.round(m%12);return '· '+((y?y+' г. ':'')+(mo?mo+' мес.':'')).trim();}
-function addMonth(d){const x=new Date(d);x.setMonth(x.getMonth()+1);return x.toISOString().slice(0,10);}
+// разбор дат YYYY-MM-DD как локальной даты (без смещения часового пояса)
+function pdate(d){if(!d)return null;if(typeof d==='string'){const m=d.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);}const x=new Date(d);x.setHours(0,0,0,0);return x;}
+const daysTo=d=>d?Math.round((pdate(d)-today())/864e5):null;
+function term(o){if(!o.start||!o.end)return'';let m=(pdate(o.end)-pdate(o.start))/2.63e9;if(m<=0)return'';let y=Math.floor(m/12),mo=Math.round(m%12);return '· '+((y?y+' г. ':'')+(mo?mo+' мес.':'')).trim();}
+function fmtDate(x){return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');}
+function addMonth(d){const x=pdate(d)||today();const day=x.getDate();x.setMonth(x.getMonth()+1);if(x.getDate()<day)x.setDate(0);return fmtDate(x);}
 const MONTHS=['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
-function isCurMonth(e){if(!e||!e.date)return false;const d=new Date(e.date),n=new Date();return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}
+function isCurMonth(e){if(!e||!e.date)return false;const d=pdate(e.date),n=new Date();return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}
 function curMonthName(){const n=new Date();return MONTHS[n.getMonth()]+' '+n.getFullYear();}
 function plural(n,one,few,many){const m=n%10,d=n%100;return n+' '+(m===1&&d!==11?one:m>=2&&m<=4&&(d<10||d>=20)?few:many);}
 function tenancyDuration(start){
   if(!start)return '—';
-  let s=new Date(start),e=today();if(e<s)return 'ещё не началась';
+  let s=pdate(start),e=today();if(e<s)return 'ещё не началась';
   let y=e.getFullYear()-s.getFullYear(),m=e.getMonth()-s.getMonth(),d=e.getDate()-s.getDate();
   if(d<0){m--;const pm=new Date(e.getFullYear(),e.getMonth(),0).getDate();d+=pm;}
   if(m<0){y--;m+=12;}
@@ -486,8 +642,27 @@ function openEdit(id){
   f_index.value=o?(o.index||''):'';f_reg.value=o?(o.reg||'no'):'no';
   f_nextpay.value=o?(o.nextpay||''):'';f_payday.value=o?(o.payday||5):5;f_comment.value=o?(o.comment||''):'';
   f_phone.value=o?(o.phone||''):'';
+  f_birth.value=o?(o.birth||''):'';f_passport.value=o?(o.passport||''):'';
+  f_passport_by.value=o?(o.passport_by||''):'';f_reg_addr.value=o?(o.reg_addr||''):'';
+  f_contract_no.value=o?(o.contract_no||''):'';
+  f_ttype.value=o?(o.ttype||'person'):'person';
+  f_kpp.value=o?(o.kpp||''):'';f_ogrn.value=o?(o.ogrn||''):'';
+  f_director.value=o?(o.director||''):'';f_basis.value=o?(o.basis||''):'';
+  updateTenantFields();
   editPhotos=o&&o.photos?o.photos.slice():[];renderPhotoPreview();
   showSheet('editSheet');
+}
+function updateTenantFields(){
+  const t=f_ttype.value;
+  const show=(id,on)=>{const el=document.getElementById(id);if(el)el.style.display=on?'':'none';};
+  show('grp_person',t==='person');
+  show('grp_org',t!=='person');
+  show('box_kpp',t==='ooo');
+  show('box_director',t==='ooo');
+  document.getElementById('lbl_tenant').textContent=t==='ooo'?'Наименование организации':t==='ip'?'ФИО предпринимателя':'ФИО арендатора';
+  f_tenant.placeholder=t==='ooo'?'напр. ООО «Ромашка»':t==='ip'?'напр. ИП Гафуров Р.Р.':'напр. Иванов Иван Иванович';
+  document.getElementById('lbl_reg').textContent=t==='person'?'Адрес регистрации арендатора':'Юридический адрес';
+  document.getElementById('lbl_ogrn').textContent=t==='ip'?'ОГРНИП':'ОГРН';
 }
 /* ---------- Фото: загрузка + сжатие ---------- */
 let editPhotos=[];
@@ -523,7 +698,10 @@ function saveObject(){
     status:f_status.value,tenant:f_tenant.value,tenant_req:f_tenant_req.value,
     rent:+f_rent.value||0,deposit:+f_deposit.value||0,start:f_start.value,end:f_end.value,
     index:+f_index.value||0,reg:f_reg.value,nextpay:f_nextpay.value,payday:+f_payday.value||5,comment:f_comment.value,
-    phone:f_phone.value,photos:editPhotos.slice()};
+    phone:f_phone.value,birth:f_birth.value,passport:f_passport.value,passport_by:f_passport_by.value,
+    reg_addr:f_reg_addr.value,contract_no:f_contract_no.value,
+    ttype:f_ttype.value,kpp:f_kpp.value,ogrn:f_ogrn.value,director:f_director.value,basis:f_basis.value,
+    photos:editPhotos.slice()};
   if(id){Object.assign(state.objects.find(x=>x.id===id),data);}
   else{state.objects.push({id:++nextId,type:state.current,payments:[],expenses:[],...data});}
   hideSheet('editSheet');render();
@@ -537,8 +715,8 @@ function markPaid(id){
   const o=state.objects.find(x=>x.id===id);
   if(!confirm('Подтвердите получение платежа '+money(o.rent)+' от «'+(o.tenant||'арендатора')+'»?'))return;
   o.payments=o.payments||[];
-  o.payments.push({id:++nextId,date:new Date().toISOString().slice(0,10),amount:o.rent});
-  o.nextpay=addMonth(o.nextpay||new Date().toISOString().slice(0,10));
+  o.payments.push({id:++nextId,date:fmtDate(new Date()),amount:o.rent});
+  o.nextpay=addMonth(o.nextpay||fmtDate(new Date()));
   openDetail(id);render();
 }
 // в архив
@@ -607,7 +785,9 @@ function openDetail(id){
           <div class="v" style="color:${p.cls==='over'?'var(--red)':p.cls==='soon'?'var(--amber)':'var(--txt)'}">${o.nextpay?fdate(o.nextpay):'—'}</div>
           <div class="l" style="margin-top:6px;border-top:1px solid var(--line);padding-top:6px;">Всего: ${(o.payments||[]).length} платежей на сумму ${money(sum(o.payments||[]))}</div>
         </div>
-        <button class="btn green" onclick="markPaid(${o.id})">✓ Отметить платёж получен (+${money(o.rent)})</button>`:''}
+        <button class="btn green" onclick="markPaid(${o.id})">✓ Отметить платёж получен (+${money(o.rent)})</button>
+        ${p.cls==='over'?`<button class="btn danger" onclick="genDebtNotice(${o.id})">📨 Сформировать уведомление о задолженности</button>`
+          :o.nextpay?`<button class="btn ghost" onclick="genReminderNotice(${o.id})">🔔 Уведомление о предстоящем платеже</button>`:''}`:''}
         
         <button class="btn primary" style="margin-top:${o.status==='rented'?'10px':'20px'}" onclick="genContract(${o.id})">📄 Сформировать договор (.docx)</button>
         ${o.status==='rented'?`<button class="btn ghost" onclick="toArchive(${o.id})">🗂 Завершить аренду → в архив</button>`:''}
@@ -649,9 +829,27 @@ function openExpArchive(){
   showSheet('expArchiveSheet');
 }
 function expStore(target){return target==='parking'?state.parkingExpenses:state.objects.find(x=>x.id===+target).expenses;}
-function openExp(target){curObjId=target;e_cat.selectedIndex=0;e_note.value='';e_amount.value='';e_date.value=new Date().toISOString().slice(0,10);showSheet('expSheet');}
+const DEFAULT_CATS=['Коммунальные услуги','Электроэнергия','Уборка / клининг','Ремонт','Налог на имущество','Охрана','Управляющая компания','Прочее'];
+function refreshCatList(){
+  const dl=document.getElementById('catList');
+  if(dl)dl.innerHTML=state.customCats.map(c=>'<option value="'+c.replace(/"/g,'&quot;')+'">').join('');
+}
+function toggleCustomCat(){
+  document.getElementById('customCatBox').style.display=e_cat.value==='Прочее'?'':'none';
+  refreshCatList();
+}
+function rememberCat(c){
+  c=c.trim();if(!c||DEFAULT_CATS.includes(c)||state.customCats.includes(c))return;
+  state.customCats.push(c);
+  const sel=document.getElementById('e_cat');const opt=document.createElement('option');opt.textContent=c;
+  sel.insertBefore(opt,sel.lastElementChild); // перед «Прочее»
+  refreshCatList();
+}
+function openExp(target){curObjId=target;e_cat.selectedIndex=0;e_cat_custom.value='';e_note.value='';e_amount.value='';e_date.value=fmtDate(new Date());toggleCustomCat();showSheet('expSheet');}
 function saveExpense(){
-  expStore(curObjId).push({id:++nextId,cat:e_cat.value,note:e_note.value,amount:+e_amount.value||0,date:e_date.value});
+  let cat=e_cat.value;
+  if(cat==='Прочее'){const c=(e_cat_custom.value||'').trim();if(c){cat=c;rememberCat(c);}}
+  expStore(curObjId).push({id:++nextId,cat:cat,note:e_note.value,amount:+e_amount.value||0,date:e_date.value});
   hideSheet('expSheet');refreshExpList();render();
 }
 function delExp(target,eid){
@@ -694,13 +892,14 @@ function openReports(){
   document.getElementById('reportBody').innerHTML='';
   showSheet('reportSheet');
 }
-function inRange(d,f,t){if(!d)return false;const x=new Date(d);return x>=new Date(f)&&x<=new Date(t);}
+function inRange(d,f,t){if(!d)return false;const x=pdate(d);return x>=pdate(f)&&x<=pdate(t);}
 function buildReport(){
   const f=r_from.value,t=r_to.value;
   if(!f||!t){alert('Укажите период');return;}
+  const scope=document.getElementById('r_scope').value;
   let html='',totIn=0,totEx=0;
   // помещения — по каждому
-  const prem=state.objects.filter(o=>o.type==='premise');
+  const prem=scope==='parking'?[]:state.objects.filter(o=>o.type==='premise');
   if(prem.length){
     html+='<div class="section-t">Нежилые помещения</div>';
     prem.forEach(o=>{
@@ -714,15 +913,17 @@ function buildReport(){
     });
   }
   // машиноместа — суммарно
-  const park=state.objects.filter(o=>o.type==='parking');
-  const pInc=park.reduce((s,o)=>s+sum((o.payments||[]).filter(p=>inRange(p.date,f,t))),0);
-  const pEx=sum(state.parkingExpenses.filter(e=>inRange(e.date,f,t)));
-  totIn+=pInc;totEx+=pEx;
-  html+='<div class="section-t">Все машиноместа (суммарно)</div>';
-  html+=`<div class="rep"><div class="n">${park.length} машиномест</div>
-    <div class="r"><span>Прибыль (поступления)</span><span class="g">${money(pInc)}</span></div>
-    <div class="r"><span>Общие расходы</span><span class="rd">${money(pEx)}</span></div>
-    <div class="r"><span>Итого</span><b>${money(pInc-pEx)}</b></div></div>`;
+  if(scope!=='premise'){
+    const park=state.objects.filter(o=>o.type==='parking');
+    const pInc=park.reduce((s,o)=>s+sum((o.payments||[]).filter(p=>inRange(p.date,f,t))),0);
+    const pEx=sum(state.parkingExpenses.filter(e=>inRange(e.date,f,t)));
+    totIn+=pInc;totEx+=pEx;
+    html+='<div class="section-t">Все машиноместа (суммарно)</div>';
+    html+=`<div class="rep"><div class="n">${park.length} машиномест</div>
+      <div class="r"><span>Прибыль (поступления)</span><span class="g">${money(pInc)}</span></div>
+      <div class="r"><span>Общие расходы</span><span class="rd">${money(pEx)}</span></div>
+      <div class="r"><span>Итого</span><b>${money(pInc-pEx)}</b></div></div>`;
+  }
   // итог
   html+=`<div class="rep" style="border-color:var(--accent)"><div class="n">ИТОГО за период</div>
     <div class="r"><span>Прибыль</span><span class="g">${money(totIn)}</span></div>
@@ -735,30 +936,264 @@ function buildReport(){
 /* ---------- Договор (.docx через Word-HTML) ---------- */
 function genContract(id){const o=state.objects.find(x=>x.id===id);buildContract(o);}
 function genContractRec(id){const r=state.archive.find(x=>x.id===id);buildContract(r);}
+// сумма прописью (рубли, целые)
+function rubWords(n){
+  n=Math.round(+n||0);if(n===0)return 'ноль рублей';
+  const ed=['','один','два','три','четыре','пять','шесть','семь','восемь','девять','десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'];
+  const edF=['','одна','две','три','четыре','пять','шесть','семь','восемь','девять','десять','одиннадцать','двенадцать','тринадцать','четырнадцать','пятнадцать','шестнадцать','семнадцать','восемнадцать','девятнадцать'];
+  const des=['','','двадцать','тридцать','сорок','пятьдесят','шестьдесят','семьдесят','восемьдесят','девяносто'];
+  const sot=['','сто','двести','триста','четыреста','пятьсот','шестьсот','семьсот','восемьсот','девятьсот'];
+  function triada(num,fem){let s='',h=Math.floor(num/100),d=Math.floor(num%100/10),e=num%10;
+    if(h)s+=sot[h]+' ';
+    if(d>=2){s+=des[d]+' ';s+=(e?(fem?edF[e]:ed[e])+' ':'');}
+    else if(d===1){s+=ed[10+e]+' ';}
+    else if(e){s+=(fem?edF[e]:ed[e])+' ';}
+    return s;}
+  function rubForm(num){const d=num%100,e=num%10;if(d>=11&&d<=14)return 'рублей';if(e===1)return 'рубль';if(e>=2&&e<=4)return 'рубля';return 'рублей';}
+  function thouForm(num){const d=num%100,e=num%10;if(d>=11&&d<=14)return 'тысяч';if(e===1)return 'тысяча';if(e>=2&&e<=4)return 'тысячи';return 'тысяч';}
+  let mil=Math.floor(n/1e6),th=Math.floor(n%1e6/1e3),r=n%1e3,out='';
+  if(mil)out+=triada(mil)+(mil%100>=11&&mil%100<=14?'миллионов ':mil%10===1?'миллион ':mil%10>=2&&mil%10<=4?'миллиона ':'миллионов ');
+  if(th)out+=triada(th,true)+thouForm(th)+' ';
+  out+=triada(r);
+  out=out.replace(/\s+/g,' ').trim();
+  return out+' '+rubForm(n);
+}
+function genContract(id){const o=state.objects.find(x=>x.id===id);buildContract(o);}
+function genContractRec(id){const r=state.archive.find(x=>x.id===id);buildContract(r);}
 function buildContract(o){
-  const obj=o.type==='parking'?'машино-место':'нежилое помещение';
+  const isPark=o.type==='parking';
+  const obj=isPark?'парковочное место':'нежилое помещение';
+  const objCap=isPark?'ПАРКОВОЧНОГО МЕСТА':'НЕЖИЛОГО ПОМЕЩЕНИЯ';
   const months=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
   const now=new Date();
-  const dur=term(o).replace('· ','');
+  const cd=o.start?pdate(o.start):now; // дата договора = дата начала аренды
+  const no=o.contract_no||('А'+(o.id||'__')+'-'+(cd.getFullYear()));
+  const L=landlord;
+  const startTxt=o.start?fdate(o.start):'«___» __________ ____ г.';
+  const endTxt=o.end?fdate(o.end):'«___» __________ ____ г.';
+  const rentW=rubWords(o.rent);
+  const depW=rubWords(o.deposit);
+  const tt=o.ttype||'person';
+  const tName=o.tenant||'_____________________';
+  // склонение «именуемый/-ая/-ое»
+  const named=tt==='ooo'?'именуемое':'именуемый(ая)';
+  // вводная характеристика арендатора по типу
+  let tIntro;
+  if(tt==='ooo'){
+    tIntro='<b>'+tName+'</b>'+
+      ((o.ogrn||o.tenant_req||o.kpp)?' ('+[o.ogrn?'ОГРН '+o.ogrn:'',o.tenant_req?'ИНН '+o.tenant_req:'',o.kpp?'КПП '+o.kpp:''].filter(Boolean).join(', ')+')':'')+
+      (o.director?', в лице '+(o.basis&&/довер/i.test(o.basis)?'представителя ':'директора ')+o.director+', действующего на основании '+(o.basis||'Устава'):'');
+  } else if(tt==='ip'){
+    tIntro='Индивидуальный предприниматель <b>'+tName+'</b>'+
+      ((o.ogrn||o.tenant_req)?' ('+[o.ogrn?'ОГРНИП '+o.ogrn:'',o.tenant_req?'ИНН '+o.tenant_req:''].filter(Boolean).join(', ')+')':'')+
+      (o.reg_addr?', зарегистрированный по адресу: '+o.reg_addr:'');
+  } else {
+    tIntro='<b>'+tName+'</b>'+(o.birth?', '+o.birth+' года рождения':'')+
+      (o.passport?', паспорт '+o.passport:'')+(o.passport_by?', выдан '+o.passport_by:'')+
+      (o.reg_addr?', зарегистрированный(ая) по адресу: '+o.reg_addr:'');
+  }
+  // блок реквизитов сторон (для подписей)
+  const lBlock='<b>«Арендодатель»:</b><br>'+L.name+'<br>'+(L.birth?L.birth+' года рождения<br>':'')+
+    'Паспорт '+L.passport+'<br>Выдан '+L.passport_by+'<br>Адрес регистрации: '+L.reg_addr+'<br>'+
+    'Реквизиты для зачисления:<br>Банк-получатель — '+L.bank+'<br>Номер счёта: '+L.acc+'<br>БИК — '+L.bik+
+    '<br>Корр. счёт — '+L.corr+'<br>ИНН банка — '+L.inn_bank+'<br>КПП банка — '+L.kpp_bank+
+    '<br>Также возможен перевод по номеру телефона '+L.phone+'.<br><br>____________ / '+L.name.split(' ').slice(0,1).join(' ')+' /';
+  let tReq;
+  if(tt==='ooo'){
+    tReq=tName+'<br>'+[o.ogrn?'ОГРН '+o.ogrn:'',o.tenant_req?'ИНН '+o.tenant_req:'',o.kpp?'КПП '+o.kpp:''].filter(Boolean).join('<br>')+
+      (o.reg_addr?'<br>Юридический адрес: '+o.reg_addr:'')+(o.director?'<br>В лице: '+o.director:'')+(o.phone?'<br>Тел.: '+o.phone:'');
+  } else if(tt==='ip'){
+    tReq='ИП '+tName+'<br>'+[o.ogrn?'ОГРНИП '+o.ogrn:'',o.tenant_req?'ИНН '+o.tenant_req:''].filter(Boolean).join('<br>')+
+      (o.reg_addr?'<br>Адрес регистрации: '+o.reg_addr:'')+(o.phone?'<br>Тел.: '+o.phone:'');
+  } else {
+    tReq=tName+'<br>'+(o.birth?o.birth+' года рождения<br>':'')+(o.passport?'Паспорт '+o.passport+'<br>':'')+
+      (o.passport_by?'Выдан '+o.passport_by+'<br>':'')+(o.reg_addr?'Адрес регистрации: '+o.reg_addr+'<br>':'')+
+      (o.phone?'Тел.: '+o.phone+'<br>':'');
+  }
+  const tBlock='<b>«Арендатор»:</b><br>'+tReq+'<br>____________ / '+tName+' /';
+  const signTable='<br><table class="sign" width="100%"><tr>'+
+    '<td width="50%">'+lBlock+'</td>'+
+    '<td width="50%">'+tBlock+'</td></tr></table>';
+
   const body=
-  '<h2 style="text-align:center">ДОГОВОР АРЕНДЫ '+(o.type==='parking'?'МАШИНО-МЕСТА':'НЕЖИЛОГО ПОМЕЩЕНИЯ')+'</h2>'+
-  '<p style="text-align:center">г. Казань&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;«'+now.getDate()+'» '+months[now.getMonth()]+' '+now.getFullYear()+' г.</p>'+
-  '<p>Арендодатель, именуемый в дальнейшем «Арендодатель», с одной стороны, и <b>'+(o.tenant||'_____________________')+'</b> ('+(o.tenant_req||'реквизиты не указаны')+'), именуемый в дальнейшем «Арендатор», с другой стороны, заключили настоящий договор о нижеследующем:</p>'+
-  '<p><b>1. Предмет договора</b><br>1.1. Арендодатель передаёт, а Арендатор принимает во временное возмездное пользование '+obj+': <b>'+o.name+'</b>, расположенное по адресу: '+(o.address||'_____________')+', площадью '+(o.area||'___')+' м².</p>'+
-  '<p><b>2. Срок аренды (долгосрочная аренда)</b><br>2.1. Настоящий договор является долгосрочным и заключается на срок с '+fdate(o.start)+' по '+fdate(o.end)+(dur?' ('+dur+')':'')+'.<br>2.2. Поскольку срок аренды составляет один год и более, договор подлежит обязательной государственной регистрации в Управлении Росреестра и считается заключённым с момента такой регистрации (ст. 651 ГК РФ).<br>2.3. По истечении срока Арендатор, надлежаще исполнявший обязанности, имеет преимущественное право на заключение договора на новый срок.</p>'+
-  '<p><b>3. Арендная плата и расчёты</b><br>3.1. Арендная плата составляет <b>'+money(o.rent)+'</b> в месяц.<br>3.2. Обеспечительный платёж (депозит): '+money(o.deposit)+'.<br>3.3. Оплата производится не позднее 5 числа каждого месяца.<br>3.4. Арендная плата ежегодно индексируется на '+(o.index?o.index+'%':'____%')+'; изменение размера платы в пределах индексации не требует переоформления договора (ст. 614 ГК РФ).</p>'+
-  '<p><b>4. Права и обязанности сторон</b><br>4.1. Арендатор обязуется использовать имущество по назначению, поддерживать его в исправном состоянии и своевременно вносить арендную плату.<br>4.2. Арендодатель обязуется передать имущество в состоянии, пригодном для использования, и не препятствовать его использованию в течение всего срока аренды.</p>'+
-  '<p><b>5. Расторжение договора</b><br>5.1. Досрочное расторжение по инициативе любой из сторон допускается с письменным уведомлением другой стороны не менее чем за 3 (три) месяца.<br>5.2. Иные основания расторжения определяются ст. 619, 620 ГК РФ.</p>'+
-  '<p><b>6. Прочие условия</b><br>6.1. Договор составлен в трёх экземплярах: по одному для каждой из сторон и один для органа регистрации.<br>6.2. Все изменения оформляются дополнительными соглашениями и подлежат государственной регистрации.<br>6.3. Во всём остальном стороны руководствуются действующим законодательством РФ.</p>'+
-  '<br><table width="100%"><tr><td width="50%"><b>Арендодатель</b><br><br>_______________ / _________ /</td>'+
-  '<td width="50%"><b>Арендатор</b><br><br>_______________ / '+(o.tenant||'_________')+' /</td></tr></table>';
-  const html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><style>body{font-family:\'Times New Roman\',serif;font-size:14px}h2{font-size:16px}p{text-align:justify}</style></head><body>'+body+'</body></html>';
+  '<h2 style="text-align:center">ДОГОВОР АРЕНДЫ '+objCap+' № '+no+'</h2>'+
+  '<table width="100%"><tr><td>г. Казань</td><td style="text-align:right">'+fdate(cd)+'</td></tr></table>'+
+  '<p>'+L.name+', именуемый в дальнейшем «Арендодатель», действуя добровольно, с одной стороны, и '+
+  tIntro+', '+named+' в дальнейшем «Арендатор», с другой стороны, совместно именуемые «Стороны», заключили настоящий договор о нижеследующем:</p>'+
+
+  '<p><b>1. Предмет договора. Общие положения</b><br>'+
+  '1.1. Арендодатель передаёт, а Арендатор принимает во временное возмездное пользование '+obj+' со следующими индивидуальными признаками: <b>'+o.name+'</b>, расположенное по адресу: '+(o.address||'_____________')+', площадью '+(o.area||'___')+' м²; назначение: '+(isPark?'парковочное место':'нежилое помещение')+'; цель использования: '+(isPark?'хранение (стоянка) транспортных средств':'использование по назначению')+'.<br>'+
+  '1.2. Объект принадлежит Арендодателю на праве собственности.<br>'+
+  '1.3. Арендодатель гарантирует, что объект свободен от прав третьих лиц, не находится под арестом, в залоге и не является предметом неразрешённых судебных споров.<br>'+
+  '1.4. Объект передаётся в состоянии, пригодном для использования по назначению; недостатки объекта, полностью или частично препятствующие пользованию, устраняются Арендодателем за свой счёт (ст. 612 ГК РФ).</p>'+
+
+  '<p><b>2. Арендная плата и порядок расчётов</b><br>'+
+  '2.1. Арендная плата составляет <b>'+money(o.rent)+'</b> ('+rentW+') в месяц и вносится не позднее '+(o.payday||6)+' (___) числа каждого текущего месяца путём перечисления на реквизиты Арендодателя либо иным согласованным сторонами законным способом.<br>'+
+  '2.2. В сумму арендной платы включены расходы по содержанию объекта (коммунальные услуги). Иные платежи с Арендатора без его письменного согласия не взимаются.<br>'+
+  '2.3. Размер арендной платы является фиксированным и не может быть изменён Арендодателем в одностороннем порядке в течение срока действия договора. Изменение арендной платы оформляется письменным соглашением Сторон, но не чаще одного раза в год (ст. 614 ГК РФ).<br>'+
+  '2.4. Обеспечительный платёж (депозит): '+money(o.deposit)+' ('+depW+'). Депозит возвращается Арендатору в течение 5 (пяти) рабочих дней после возврата объекта при отсутствии задолженности и подтверждённого ущерба.<br>'+
+  '2.5. В платёжных документах указывается: «Оплата по Договору № '+no+'».</p>'+
+
+  '<p><b>3. Права и обязанности сторон</b><br>'+
+  '3.1. Арендодатель обязан: передать объект в день подписания договора в пригодном состоянии; обеспечить беспрепятственное пользование объектом в течение всего срока аренды и не вмешиваться в хозяйственную деятельность Арендатора; производить за свой счёт капитальный ремонт и устранять не зависящие от Арендатора недостатки.<br>'+
+  '3.2. Арендодатель вправе контролировать целевое использование и состояние объекта, предварительно согласовав с Арендатором дату и время осмотра.<br>'+
+  '3.3. Арендатор обязан: использовать объект по целевому назначению; своевременно вносить арендную плату; поддерживать объект в исправном и чистом состоянии; соблюдать правила пожарной безопасности и санитарные нормы; по окончании договора возвратить объект по акту с учётом нормального износа.<br>'+
+  '3.4. Арендатор вправе пользоваться объектом в соответствии с целью использования; требовать соразмерного уменьшения арендной платы при ухудшении условий пользования по обстоятельствам, за которые он не отвечает (ст. 614 ГК РФ).<br>'+
+  '3.5. Арендатор не отвечает за нормальный износ объекта и за обстоятельства непреодолимой силы.</p>'+
+
+  '<p><b>4. Ответственность сторон</b><br>'+
+  '4.1. За нарушение сроков внесения арендной платы Арендатор уплачивает пени в размере 0,1% от суммы просроченного платежа за каждый день просрочки, но не более 10% от суммы платежа. Пени не начисляются за первый месяц аренды и за первые 5 (пять) календарных дней просрочки.<br>'+
+  '4.2. Арендодатель отвечает за недостатки переданного объекта, препятствующие пользованию, и возмещает Арендатору причинённые этим убытки. За нарушение обязательств Арендодатель несёт ответственность в соответствии с действующим законодательством РФ.<br>'+
+  '4.3. Уплата неустойки не освобождает Стороны от исполнения обязательств.</p>'+
+
+  '<p><b>5. Изменение и расторжение договора</b><br>'+
+  '5.1. Все изменения и дополнения действительны при оформлении в письменном виде и подписании обеими Сторонами.<br>'+
+  '5.2. Арендатор вправе в любое время отказаться от договора, письменно уведомив Арендодателя не менее чем за 30 (тридцать) календарных дней; при этом депозит подлежит возврату в порядке п. 2.4.<br>'+
+  '5.3. Арендодатель вправе расторгнуть договор досрочно только при существенном нарушении Арендатором его условий и только после направления письменного уведомления с предоставлением Арендатору разумного срока (не менее 10 рабочих дней) для устранения нарушения. Если нарушение устранено в указанный срок, договор сохраняет силу (ст. 619 ГК РФ).<br>'+
+  '5.4. По истечении срока Арендатор, надлежаще исполнявший обязанности, имеет преимущественное право на заключение договора на новый срок (ст. 621 ГК РФ).</p>'+
+
+  '<p><b>6. Срок действия. Заключительные положения</b><br>'+
+  '6.1. Договор вступает в силу с момента подписания, действует с '+startTxt+' по '+endTxt+'.<br>'+
+  '6.2. Споры разрешаются путём переговоров; при недостижении согласия — в суде по месту нахождения объекта в соответствии с законодательством РФ.<br>'+
+  '6.3. При изменении наименования, адреса, реквизитов и иных данных Сторона обязана в десятидневный срок письменно уведомить другую Сторону.<br>'+
+  '6.4. Приложение № 1 (Акт приёма-передачи) является неотъемлемой частью договора.<br>'+
+  '6.5. Договор составлен в двух экземплярах, имеющих равную юридическую силу, по одному для каждой из Сторон.</p>'+
+
+  '<p style="text-align:center"><b>ПОДПИСИ СТОРОН</b></p>'+signTable+
+
+  // ---------- Акт приёма-передачи ----------
+  '<br style="page-break-before:always">'+
+  '<p style="text-align:right">Приложение № 1 к Договору аренды № '+no+' от '+fdate(cd)+'</p>'+
+  '<h2 style="text-align:center">АКТ приёма-передачи объекта аренды</h2>'+
+  '<table width="100%"><tr><td>г. Казань</td><td style="text-align:right">'+fdate(cd)+'</td></tr></table>'+
+  '<p>'+L.name+' («Арендодатель») и '+(o.tenant||'_____________________')+' («Арендатор») составили настоящий акт о том, что Арендодатель передал, а Арендатор принял во временное пользование '+obj+': <b>'+o.name+'</b>, расположенное по адресу: '+(o.address||'_____________')+', площадью '+(o.area||'___')+' м².</p>'+
+  '<p>Объект передан в состоянии, пригодном для использования по назначению. Арендатор претензий к состоянию объекта не имеет. Настоящий акт составлен в двух экземплярах и является неотъемлемой частью Договора аренды № '+no+'.</p>'+
+  '<p style="text-align:center"><b>ПОДПИСИ СТОРОН</b></p>'+signTable;
+
+  const html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><style>body{font-family:\'Times New Roman\',serif;font-size:14px;line-height:1.4}h2{font-size:15px;margin:10px 0}p{text-align:left;margin:7px 0}td{font-size:14px;vertical-align:top}table.sign{border-collapse:collapse}table.sign td{border:1px solid #000;padding:8px}</style></head><body>'+body+'</body></html>';
   const blob=new Blob(['﻿'+html],{type:'application/msword'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='Договор_'+(o.name||'объект').replace(/[^а-яА-Яa-zA-Z0-9]+/g,'_')+'.doc';
+  a.download='Договор_'+no+'_'+(o.tenant||o.name||'объект').replace(/[^а-яА-Яa-zA-Z0-9]+/g,'_')+'.doc';
   document.body.appendChild(a);a.click();a.remove();
 }
+/* ---------- Уведомление о задолженности ---------- */
+let noticeObjName='объект';
+function overduePeriods(o){ // число просроченных месячных платежей
+  if(!o.nextpay)return 1;let n=0,cur=pdate(o.nextpay),t=today();
+  while(cur<=t){n++;cur.setMonth(cur.getMonth()+1);}
+  return Math.max(1,n);
+}
+function genDebtNotice(id){
+  const o=state.objects.find(x=>x.id===id);if(!o)return;
+  const days=Math.max(0,-daysTo(o.nextpay));
+  const obj=o.type==='parking'?'машино-место':'нежилое помещение';
+  const now=new Date();
+  const dl=fmtDate(new Date(now.getFullYear(),now.getMonth(),now.getDate()+7));
+  const txt=
+`Между Вами и Арендодателем заключён договор аренды, по которому Вам передан(о) ${obj} «${o.name}»${o.address?', расположенное по адресу: '+o.address:''}, площадью ${o.area||'___'} м².
+Согласно условиям договора, арендная плата составляет ${money(o.rent)} в месяц и подлежит внесению ежемесячно. Дата очередного платежа — ${fdate(o.nextpay)}.
+По состоянию на ${fdate(fmtDate(now))} оплата не поступила. Период просрочки составляет ${plural(days,'день','дня','дней')}. Просим Вас погасить указанную задолженность в срок до ${fdate(dl)} включительно.`;
+  noticeObjName=o.name;
+  document.getElementById('noticeText').value=txt;
+  document.querySelector('#noticeSheet h2').textContent='📨 Уведомление о задолженности';
+  showSheet('noticeSheet');
+}
+function genReminderNotice(id){
+  const o=state.objects.find(x=>x.id===id);if(!o)return;
+  const d=daysTo(o.nextpay);
+  const when=d===0?'сегодня':d===1?'завтра':'через '+plural(d,'день','дня','дней');
+  const obj=o.type==='parking'?'машино-место':'нежилое помещение';
+  const now=new Date();
+  const txt=
+`УВЕДОМЛЕНИЕ О ПРЕДСТОЯЩЕМ ПЛАТЕЖЕ
+
+Кому: ${o.tenant||'_____________________'}${o.tenant_req?'\n('+o.tenant_req+')':''}
+Дата: ${fdate(fmtDate(now))}
+г. Казань
+
+Уважаемый(ая) арендатор!
+
+Напоминаем, что по договору аренды ${obj} «${o.name}»${o.address?', расположенного по адресу: '+o.address:''}, наступает срок внесения очередной арендной платы.
+
+  • Дата платежа: ${fdate(o.nextpay)} (${when})
+  • Сумма к оплате: ${money(o.rent)}
+
+Просим Вас своевременно произвести оплату во избежание начисления пени и образования задолженности.
+
+Если оплата уже произведена, просим считать настоящее уведомление информационным.
+
+С уважением,
+Арендодатель
+_______________ / _________________ /`;
+  noticeObjName=o.name;
+  document.getElementById('noticeText').value=txt;
+  document.querySelector('#noticeSheet h2').textContent='🔔 Уведомление о предстоящем платеже';
+  showSheet('noticeSheet');
+}
+function copyNotice(){
+  const ta=document.getElementById('noticeText');
+  ta.select();
+  const done=()=>alert('Текст скопирован в буфер обмена');
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(ta.value).then(done,()=>{document.execCommand('copy');done();});}
+  else{document.execCommand('copy');done();}
+}
+function downloadNotice(){
+  const text=document.getElementById('noticeText').value;
+  const html='<html xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>body{font-family:\'Times New Roman\',serif;font-size:14px;white-space:pre-wrap}</style></head><body>'+
+    text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</body></html>';
+  const blob=new Blob(['﻿'+html],{type:'application/msword'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='Уведомление_'+String(noticeObjName).replace(/[^а-яА-Яa-zA-Z0-9]+/g,'_')+'.doc';
+  document.body.appendChild(a);a.click();a.remove();
+}
+
+/* ---------- Анимированный фон (canvas) ---------- */
+(function(){
+  const cv=document.getElementById('bgcanvas');if(!cv)return;const ctx=cv.getContext('2d');
+  let w,h,dots=[];const COLORS=['91,140,255','124,91,255','52,211,153'];
+  function resize(){w=cv.width=innerWidth;h=cv.height=innerHeight;
+    const n=Math.min(70,Math.round(w*h/22000));dots=[];
+    for(let i=0;i<n;i++)dots.push({x:Math.random()*w,y:Math.random()*h,
+      vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*2+1,
+      c:COLORS[i%COLORS.length]});}
+  function tick(){ctx.clearRect(0,0,w,h);
+    for(let i=0;i<dots.length;i++){const a=dots[i];a.x+=a.vx;a.y+=a.vy;
+      if(a.x<0||a.x>w)a.vx*=-1;if(a.y<0||a.y>h)a.vy*=-1;
+      ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,6.283);ctx.fillStyle='rgba('+a.c+',.8)';ctx.fill();
+      for(let j=i+1;j<dots.length;j++){const b=dots[j],dx=a.x-b.x,dy=a.y-b.y,d=dx*dx+dy*dy;
+        if(d<16000){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle='rgba('+a.c+','+(.18*(1-d/16000))+')';ctx.lineWidth=1;ctx.stroke();}}}
+    requestAnimationFrame(tick);}
+  addEventListener('resize',resize);resize();tick();
+})();
+
+/* ---------- Уведомление о просрочках при запуске ---------- */
+function collectOverdue(){
+  return state.objects.filter(o=>o.status==='rented'&&o.nextpay&&daysTo(o.nextpay)<0)
+    .map(o=>({o,days:-daysTo(o.nextpay)}))
+    .sort((a,b)=>b.days-a.days);
+}
+function showOverdueAlert(){
+  const od=collectOverdue();if(!od.length)return;
+  const total=od.reduce((s,x)=>s+(+x.o.rent||0),0);
+  document.getElementById('alertSub').textContent=
+    plural(od.length,'арендатор','арендатора','арендаторов')+' не внес'+(od.length===1?'':'ли')+' оплату в срок';
+  document.getElementById('alertList').innerHTML=od.map(({o,days},i)=>`
+    <div class="od-row" style="animation-delay:${.05+i*.05}s" onclick="closeOverdue();switchTab('${o.type}');openDetail(${o.id})">
+      <div>
+        <div class="nm">${o.tenant||'—'}</div>
+        <div class="sb">${o.name} · платёж был ${fdate(o.nextpay)}</div>
+        ${o.phone?`<div class="ph2">📞 ${o.phone}</div>`:''}
+      </div>
+      <div class="am"><b>${money(o.rent)}</b><span>просрочка ${plural(days,'день','дня','дней')}</span></div>
+    </div>`).join('')+
+    `<div class="od-total"><span>Итого к взысканию</span><b>${money(total)}</b></div>`;
+  document.getElementById('alertOverlay').classList.add('show');
+}
+function closeOverdue(){document.getElementById('alertOverlay').classList.remove('show');}
+
 render();
+showOverdueAlert();
 </script>
 </body>
 </html>
