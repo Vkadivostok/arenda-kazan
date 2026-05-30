@@ -1881,6 +1881,18 @@
             display: none;
         }
 
+        .pdf-stage .invoice,
+        .pdf-stage .storage-doc,
+        .print-area .invoice,
+        .print-area .storage-doc,
+        .safari-print-document .invoice,
+        .safari-print-document .storage-doc {
+            width: 794px !important;
+            min-width: 794px !important;
+            max-width: none !important;
+            box-sizing: border-box !important;
+        }
+
         .print-area {
             display: none;
         }
@@ -1907,8 +1919,11 @@
             }
             .print-area .invoice,
             .print-area .storage-doc {
-                width: 100%;
+                width: 794px !important;
+                min-width: 794px !important;
+                max-width: none !important;
                 box-shadow: none;
+                transform-origin: top left;
             }
             .print-area .storage-doc {
                 width: 794px !important;
@@ -2669,6 +2684,41 @@
                 min-width: 0;
             }
             .invoice-signs { flex-direction: column; }
+
+            .pdf-stage .invoice,
+            .print-area .invoice,
+            .safari-print-document .invoice,
+            .pdf-stage .storage-doc,
+            .print-area .storage-doc,
+            .safari-print-document .storage-doc {
+                width: 794px !important;
+                min-width: 794px !important;
+                max-width: none !important;
+            }
+
+            .pdf-stage .invoice-signs,
+            .print-area .invoice-signs,
+            .safari-print-document .invoice-signs {
+                flex-direction: row !important;
+            }
+
+            .pdf-stage .ticket-grid,
+            .print-area .ticket-grid,
+            .safari-print-document .ticket-grid,
+            .pdf-stage .storage-doc .ticket-grid,
+            .print-area .storage-doc .ticket-grid,
+            .safari-print-document .storage-doc .ticket-grid {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+            }
+
+            .pdf-stage .storage-doc,
+            .print-area .storage-doc,
+            .safari-print-document .storage-doc {
+                height: 1040px !important;
+                max-height: 1040px !important;
+            }
 
             /* Радиогруппа в столбик и без min-width, чтобы не вылезала */
             .radio-group {
@@ -6799,7 +6849,7 @@
                 <html lang="ru">
                 <head>
                     <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <meta name="viewport" content="width=794, initial-scale=1.0">
                     <title>${escapeHtml(title)}</title>
                     <style>
                         body { font-family: "Segoe UI", Arial, sans-serif; padding: 18px; color: #2c2520; }
@@ -6824,7 +6874,7 @@
                 <html lang="ru">
                 <head>
                     <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <meta name="viewport" content="width=794, initial-scale=1.0">
                     <title>${escapeHtml(title)}</title>
                     ${styles}
                     <style>
@@ -6863,11 +6913,18 @@
                         }
                         .safari-print-document {
                             width: 794px;
+                            min-width: 794px;
                             margin: 0 auto;
                             background: #fff;
                         }
+                        .safari-print-document .invoice {
+                            width: 794px !important;
+                            min-width: 794px !important;
+                            max-width: none !important;
+                        }
                         .safari-print-document .storage-doc {
                             width: 794px !important;
+                            min-width: 794px !important;
                             max-width: none !important;
                             zoom: 0.96;
                             transform-origin: top left;
@@ -6884,11 +6941,18 @@
                         @media print {
                             .safari-print-actions { display: none !important; }
                             .safari-print-document {
-                                width: 100% !important;
+                                width: 794px !important;
+                                min-width: 794px !important;
                                 margin: 0 !important;
+                            }
+                            .safari-print-document .invoice {
+                                width: 794px !important;
+                                min-width: 794px !important;
+                                max-width: none !important;
                             }
                             .safari-print-document .storage-doc {
                                 width: 794px !important;
+                                min-width: 794px !important;
                                 max-width: none !important;
                                 zoom: 0.96;
                                 height: 1040px !important;
